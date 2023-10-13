@@ -33,7 +33,7 @@ type ItemProps = {
   level?: number;
   onExpand?: () => void;
   label: string;
-  onClick: () => void;
+  onClick?: () => void;
   icon: LucideIcon;
 };
 
@@ -69,7 +69,7 @@ const Item = ({
     toast.promise(promise, {
       loading: "Moving to trash...",
       success: "Note moved to trash!",
-      error: "Failed to archive note",
+      error: "Failed to archive note.",
     });
   };
 
@@ -167,7 +167,7 @@ const Item = ({
 Item.Skeleton = function ItemSkeleton({ level }: { level?: number }) {
   return (
     <div
-      style={{ paddingLeft: level ? `${level * 12 + 25}` : "12px" }}
+      style={{ paddingLeft: level ? `${(level * 12) + 25}px` : "12px" }}
       className="flex gap-x-2 py-[3px]"
     >
       <Skeleton className="h-4 w-4" />
