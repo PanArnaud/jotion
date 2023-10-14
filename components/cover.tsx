@@ -11,6 +11,7 @@ import { useMutation } from "convex/react";
 import { ImageIcon, X } from "lucide-react";
 import Image from "next/image";
 import { useParams } from "next/navigation";
+import { Skeleton } from "./ui/skeleton";
 
 interface CoverImageProps {
   url?: string;
@@ -26,7 +27,7 @@ export const Cover = ({ url, preview }: CoverImageProps) => {
   const onRemove = async () => {
     if (url) {
       await edgestore.publicFiles.delete({
-        url
+        url,
       });
     }
     removeCoverImage({
@@ -67,4 +68,8 @@ export const Cover = ({ url, preview }: CoverImageProps) => {
       )}
     </div>
   );
+};
+
+Cover.Skeleton = function CoverSkeleton() {
+  return <Skeleton className="w-full h-[12vh]" />;
 };
