@@ -1,14 +1,14 @@
 "use client";
 
-import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
-import { useCoverImage } from "@/hooks/use-cover-image";
 import { SingleImageDropzone } from "@/components/single-image-dropzone";
-import { useState } from "react";
+import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
+import { api } from "@/convex/_generated/api";
+import { Id } from "@/convex/_generated/dataModel";
+import { useCoverImage } from "@/hooks/use-cover-image";
 import { useEdgeStore } from "@/lib/edgestore";
 import { useMutation } from "convex/react";
-import { api } from "@/convex/_generated/api";
 import { useParams } from "next/navigation";
-import { Id } from "@/convex/_generated/dataModel";
+import { useState } from "react";
 
 export const CoverImageModal = () => {
   const params = useParams();
@@ -23,15 +23,18 @@ export const CoverImageModal = () => {
     setFile(undefined);
     setIsSubmitting(false);
     coverImage.onClose();
-  }
+  };
 
-  const onChange = async (file?: File) => {
+  const onChange = async (file?: File) => {
     if (file) {
       setIsSubmitting(true);
       setFile(file);
 
       const res = await edgestore.publicFiles.upload({
-        file
+        file,
+        options: {
+          replaceTargetUrl: coverImage.url,
+        },
       });
 
       await update({
@@ -39,9 +42,9 @@ export const CoverImageModal = () => {
         coverImage: res.url,
       });
 
-      onClose()
+      onClose();
     }
-  }
+  };
 
   return (
     <Dialog open={coverImage.isOpen} onOpenChange={coverImage.onClose}>
